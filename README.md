@@ -1,0 +1,1 @@
+CI [![Build status](https://ci.appveyor.com/api/projects/status/hm6e75lqtqx5l49m?svg=true)](https://ci.appveyor.com/project/IvanKorolev13/pageobjecttask1)
