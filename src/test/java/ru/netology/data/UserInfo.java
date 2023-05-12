@@ -1,15 +1,15 @@
 package ru.netology.data;
 
-public class UserData {
+public class UserInfo {
     private String userLogin;
     private String userPassword;
 
-    public UserData(String userLogin, String userPassword) {
+    public UserInfo(String userLogin, String userPassword) {
         this.userLogin = userLogin;
         this.userPassword = userPassword;
     }
 
-    public UserData(String userLogin) {
+    public UserInfo(String userLogin) {
         this.userLogin = userLogin;
     }
 

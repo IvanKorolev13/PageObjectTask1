@@ -3,7 +3,9 @@ package ru.netology.pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
-import ru.netology.data.Transaction;
+import ru.netology.data.CardInfo;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -14,26 +16,30 @@ public class CardReplenishmentPage {
     private final SelenideElement escapeButton = $("button[data-test-id='action-cancel']");
     private final SelenideElement errorNotification = $("div[class='notification__content']");
 
-    public DashboardPage makeTransferFromAndAmount(Transaction tran) {
+    public DashboardPage makeTransferFromAndAmount(CardInfo card, int amount) {
         amountInput.sendKeys(Keys.LEFT_SHIFT, Keys.HOME, Keys.BACK_SPACE);
-        amountInput.setValue(tran.getAmount() + "");
+        amountInput.setValue(amount + "");
         fromCardNumberInput.sendKeys(Keys.LEFT_SHIFT, Keys.HOME, Keys.BACK_SPACE);
-        fromCardNumberInput.setValue(tran.getCardFrom().getCardNumber());
+        fromCardNumberInput.setValue(card.getCardNumber());
         okButton.click();
 
         return new DashboardPage();
     }
 
-    public CardReplenishmentPage makeTransferWithErrorCard(Transaction tran) {
+    public DashboardPage makeTransferWithErrorCard(CardInfo card, int amount) {
         amountInput.sendKeys(Keys.LEFT_SHIFT, Keys.HOME, Keys.BACK_SPACE);
-        amountInput.setValue(tran.getAmount() + "");
+        amountInput.setValue(amount + "");
         fromCardNumberInput.sendKeys(Keys.LEFT_SHIFT, Keys.HOME, Keys.BACK_SPACE);
-        fromCardNumberInput.setValue(tran.getCardFrom().getCardNumber());
+        fromCardNumberInput.setValue(card.getCardNumber());
         okButton.click();
 
-        errorNotification.shouldBe(Condition.appear);
+        errorNotification
+                .shouldBe(Condition.appear, Duration.ofSeconds(5))
+                .shouldHave(Condition.text("Ошибк"));
 
-        return this;
+        escapeButton.click();
+
+        return new DashboardPage();
     }
 
     public CardReplenishmentPage() {

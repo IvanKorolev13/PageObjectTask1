@@ -1,23 +1,20 @@
 package ru.netology.data;
 
-import com.codeborne.selenide.SelenideElement;
-
-public class CardData {
-    private UserData user;
+public class CardInfo {
+    private UserInfo user;
     private String cardNumber;
     private int cardAmount;
-    private SelenideElement replenishmentButton;
 
-    public CardData(UserData user, String cardNumber) {
+    public CardInfo(UserInfo user, String cardNumber) {
         this.user = user;
         this.cardNumber = cardNumber;
     }
 
-    public UserData getUser() {
+    public UserInfo getUser() {
         return user;
     }
 
-    public void setUser(UserData user) {
+    public void setUser(UserInfo user) {
         this.user = user;
     }
 
@@ -35,13 +32,5 @@ public class CardData {
 
     public void setCardAmount(int cardAmount) {
         this.cardAmount = cardAmount;
-    }
-
-    public SelenideElement getReplenishmentButton() {
-        return replenishmentButton;
-    }
-
-    public void setReplenishmentButton(SelenideElement replenishmentButton) {
-        this.replenishmentButton = replenishmentButton;
     }
 }

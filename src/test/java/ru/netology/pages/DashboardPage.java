@@ -3,15 +3,13 @@ package ru.netology.pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import ru.netology.data.CardData;
-import ru.netology.data.Transaction;
+import ru.netology.data.CardInfo;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class DashboardPage {
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
-    //private  String xpathForCardTextInDashboard = "//div[@data-test-id]";
     private ElementsCollection cardsList = $$x("//ul[contains(@class,'list')]//div[@data-test-id]");
     private String cssLocatorForReplenishmentButton = "button[data-test-id='action-deposit']";
 
@@ -19,13 +17,13 @@ public class DashboardPage {
         cardsList.get(0).shouldBe(Condition.appear);
     }
 
-    public CardReplenishmentPage makeTransferTo(Transaction tran) {
-        findCardInList(tran.getCardTo()).$(cssLocatorForReplenishmentButton).click();
+    public CardReplenishmentPage makeTransferTo(CardInfo card) {
+        findCardInList(card).$(cssLocatorForReplenishmentButton).click();
 
         return new CardReplenishmentPage();
     }
 
-    public SelenideElement findCardInList(CardData card) {
+    public SelenideElement findCardInList(CardInfo card) {
         String last4DigitOfCardNumber = card.getCardNumber().substring(15);
         for (SelenideElement element : cardsList) {
             if (element.text().contains(last4DigitOfCardNumber)) {
@@ -35,7 +33,7 @@ public class DashboardPage {
         return null;
     }
 
-    public int getCardBalanceOnPage(CardData card) {
+    public int getCardBalanceOnPage(CardInfo card) {
         String textInElement = findCardInList(card).text();
         return extractBalance(textInElement);
     }
@@ -47,7 +45,7 @@ public class DashboardPage {
         return Integer.parseInt(value);
     }
 
-    public int readAndWriteBalanceOf(CardData card) {
+    public int readAndWriteBalanceOf(CardInfo card) {
         int balance = getCardBalanceOnPage(card);
         card.setCardAmount(balance);
         return balance;
