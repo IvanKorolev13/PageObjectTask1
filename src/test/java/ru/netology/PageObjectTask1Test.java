@@ -52,14 +52,8 @@ class PageObjectTask1Test {
                 .makeTransferTo(validUser1Card1)
                 .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
 
-        assertEquals(
-                startBalanceOfCard1 + transactionAmount,
-                dashboardPage.getCardBalanceOnPage(validUser1Card1))
-        ;
-        assertEquals(
-                startBalanceOfCard2 - transactionAmount,
-                dashboardPage.getCardBalanceOnPage(validUser1Card2)
-        );
+        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
+        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
     }
 
     @Test
@@ -71,14 +65,8 @@ class PageObjectTask1Test {
                 .makeTransferTo(validUser1Card1)
                 .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
 
-        assertEquals(
-                startBalanceOfCard1 + transactionAmount,
-                dashboardPage.getCardBalanceOnPage(validUser1Card1))
-        ;
-        assertEquals(
-                startBalanceOfCard2 - transactionAmount,
-                dashboardPage.getCardBalanceOnPage(validUser1Card2)
-        );
+        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
+        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
     }
 
     @Test
@@ -90,14 +78,8 @@ class PageObjectTask1Test {
                 .makeTransferTo(validUser1Card1)
                 .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
 
-        assertEquals(
-                startBalanceOfCard1 + transactionAmount,
-                dashboardPage.getCardBalanceOnPage(validUser1Card1))
-        ;
-        assertEquals(
-                startBalanceOfCard2 - transactionAmount,
-                dashboardPage.getCardBalanceOnPage(validUser1Card2)
-        );
+        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
+        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
     }
 
     /**
@@ -112,14 +94,8 @@ class PageObjectTask1Test {
                 .makeTransferTo(validUser1Card1)
                 .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
 
-        assertEquals(
-                startBalanceOfCard1,
-                dashboardPage.getCardBalanceOnPage(validUser1Card1))
-        ;
-        assertEquals(
-                startBalanceOfCard2,
-                dashboardPage.getCardBalanceOnPage(validUser1Card2)
-        );
+        assertEquals(startBalanceOfCard1, dashboardPage.getCardBalanceOnPage(validUser1Card1));
+        assertEquals(startBalanceOfCard2, dashboardPage.getCardBalanceOnPage(validUser1Card2));
     }
 
     @Test
@@ -129,16 +105,8 @@ class PageObjectTask1Test {
         dashboardPage = new DashboardPage();
         dashboardPage
                 .makeTransferTo(validUser1Card1)
-                .makeTransferWithErrorCard(validUser1Card2, transactionAmount);
+                .makeTransferWithErrorCard(validUser1Card3, transactionAmount);
 
-        assertEquals(
-                startBalanceOfCard1,
-                dashboardPage.getCardBalanceOnPage(validUser1Card1))
-        ;
-        assertEquals(
-                startBalanceOfCard2,
-                dashboardPage.getCardBalanceOnPage(validUser1Card2)
-        );
+        assertEquals(startBalanceOfCard1, dashboardPage.getCardBalanceOnPage(validUser1Card1));
     }
-
 }
