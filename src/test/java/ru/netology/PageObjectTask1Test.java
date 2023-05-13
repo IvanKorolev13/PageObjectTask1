@@ -94,6 +94,8 @@ class PageObjectTask1Test {
                 .makeTransferTo(validUser1Card1)
                 .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
 
+        // не знаю как должна реагировать программа на попытку пополнить сумму большую, чем остаток
+
         assertEquals(startBalanceOfCard1, dashboardPage.getCardBalanceOnPage(validUser1Card1));
         assertEquals(startBalanceOfCard2, dashboardPage.getCardBalanceOnPage(validUser1Card2));
     }
