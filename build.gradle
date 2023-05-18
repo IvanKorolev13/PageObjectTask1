@@ -16,12 +16,13 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testImplementation 'org.projectlombok:lombok:1.18.22'
-    testImplementation 'org.projectlombok:lombok:1.18.22'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     testImplementation 'com.codeborne:selenide:5.19.0'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.2'
+    testCompileOnly 'org.projectlombok:lombok:1.18.26'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
 
 test {

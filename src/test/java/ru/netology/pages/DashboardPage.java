@@ -3,7 +3,7 @@ package ru.netology.pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import ru.netology.data.CardInfo;
+import ru.netology.data.DataHelper.CardInfo;
 
 import static com.codeborne.selenide.Selenide.*;
 
@@ -25,12 +25,8 @@ public class DashboardPage {
 
     public SelenideElement findCardInList(CardInfo card) {
         String last4DigitOfCardNumber = card.getCardNumber().substring(15);
-        for (SelenideElement element : cardsList) {
-            if (element.text().contains(last4DigitOfCardNumber)) {
-                return element;
-            }
-        }
-        return null;
+
+        return cardsList.findBy(Condition.text(last4DigitOfCardNumber));
     }
 
     public int getCardBalanceOnPage(CardInfo card) {
@@ -43,11 +39,5 @@ public class DashboardPage {
         int finish = text.indexOf(balanceFinish);
         String value = text.substring(start + balanceStart.length(), finish);
         return Integer.parseInt(value);
-    }
-
-    public int readAndWriteBalanceOf(CardInfo card) {
-        int balance = getCardBalanceOnPage(card);
-        card.setCardAmount(balance);
-        return balance;
     }
 }

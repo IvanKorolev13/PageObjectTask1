@@ -2,20 +2,22 @@ package ru.netology;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.data.CardInfo;
-import ru.netology.data.UserInfo;
+import ru.netology.data.DataHelper;
+import ru.netology.data.DataHelper.CardInfo;
+import ru.netology.data.DataHelper.UserInfo;
 import ru.netology.pages.DashboardPage;
 import ru.netology.pages.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.netology.data.DataHelper.VERIFICATION_CODE_TEST;
 
 class PageObjectTask1Test {
-    private UserInfo validUser1 = new UserInfo("vasya", "qwerty123");
-    private CardInfo validUser1Card1 = new CardInfo(validUser1, "5559 0000 0000 0001");
-    private CardInfo validUser1Card2 = new CardInfo(validUser1, "5559 0000 0000 0002");
-    private CardInfo validUser1Card3 = new CardInfo(validUser1, "1111 0000 0000 0000");
-    private final static String VERIFICATION_CODE_TEST = "12345";
+    UserInfo validUser1 = DataHelper.getAuthInfo();
+    CardInfo validUser1Card1 = new CardInfo(validUser1, "5559 0000 0000 0001");
+    CardInfo validUser1Card2 = new CardInfo(validUser1, "5559 0000 0000 0002");
+    CardInfo validUser1Card3 = new CardInfo(validUser1, "1111 0000 0000 0000");
+
     DashboardPage dashboardPage;
     int startBalanceOfCard1;
     int startBalanceOfCard2;
@@ -29,7 +31,7 @@ class PageObjectTask1Test {
         dashboardPage = new DashboardPage();
 
         int difference =
-                dashboardPage.readAndWriteBalanceOf(validUser1Card1) - dashboardPage.readAndWriteBalanceOf(validUser1Card2);
+                dashboardPage.getCardBalanceOnPage(validUser1Card1) - dashboardPage.getCardBalanceOnPage(validUser1Card2);
         if (difference > 0) {
             dashboardPage
                     .makeTransferTo(validUser1Card2)
@@ -39,8 +41,8 @@ class PageObjectTask1Test {
                     .makeTransferTo(validUser1Card1)
                     .makeTransferFromAndAmount(validUser1Card2, difference / 2);
         }
-        startBalanceOfCard1 = dashboardPage.readAndWriteBalanceOf(validUser1Card1);
-        startBalanceOfCard2 = dashboardPage.readAndWriteBalanceOf(validUser1Card2);
+        startBalanceOfCard1 = dashboardPage.getCardBalanceOnPage(validUser1Card1);
+        startBalanceOfCard2 = dashboardPage.getCardBalanceOnPage(validUser1Card2);
     }
 
     @Test
@@ -62,11 +64,11 @@ class PageObjectTask1Test {
 
         dashboardPage = new DashboardPage();
         dashboardPage
-                .makeTransferTo(validUser1Card1)
-                .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
+                .makeTransferTo(validUser1Card2)
+                .makeTransferFromAndAmount(validUser1Card1, transactionAmount);
 
-        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
-        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
+        assertEquals(startBalanceOfCard2 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
+        assertEquals(startBalanceOfCard1 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
     }
 
     @Test
