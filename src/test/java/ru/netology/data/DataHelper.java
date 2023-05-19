@@ -7,7 +7,14 @@ public class DataHelper {
     private DataHelper() {
     }
 
-    public static String VERIFICATION_CODE_TEST = "12345";
+    @Value
+    public static class VerificationCode {
+        private String testCode;
+    }
+
+    public static VerificationCode getVerificationTestCode() {
+        return new VerificationCode("12345");
+    }
 
     @Value
     public static class UserInfo {
@@ -21,7 +28,18 @@ public class DataHelper {
 
     @Value
     public static class CardInfo {
-        private UserInfo user;
         private String cardNumber;
+    }
+
+    public static CardInfo getCard1() {
+        return new CardInfo("5559 0000 0000 0001");
+    }
+
+    public static CardInfo getCard2() {
+        return new CardInfo("5559 0000 0000 0002");
+    }
+
+    public static CardInfo getNonExistentCard() {
+        return new CardInfo("1111 0000 0000 0000");
     }
 }

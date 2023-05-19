@@ -5,18 +5,19 @@ import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelper;
 import ru.netology.data.DataHelper.CardInfo;
 import ru.netology.data.DataHelper.UserInfo;
+import ru.netology.data.DataHelper.VerificationCode;
 import ru.netology.pages.DashboardPage;
 import ru.netology.pages.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.data.DataHelper.VERIFICATION_CODE_TEST;
 
 class PageObjectTask1Test {
     UserInfo validUser1 = DataHelper.getAuthInfo();
-    CardInfo validUser1Card1 = new CardInfo(validUser1, "5559 0000 0000 0001");
-    CardInfo validUser1Card2 = new CardInfo(validUser1, "5559 0000 0000 0002");
-    CardInfo validUser1Card3 = new CardInfo(validUser1, "1111 0000 0000 0000");
+    CardInfo card1 = DataHelper.getCard1();
+    CardInfo card2 = DataHelper.getCard2();
+    CardInfo nonExistentCard = DataHelper.getNonExistentCard();
+    VerificationCode verificationCode = DataHelper.getVerificationTestCode();
 
     DashboardPage dashboardPage;
     int startBalanceOfCard1;
@@ -27,22 +28,22 @@ class PageObjectTask1Test {
         open("http://localhost:9999");
         new LoginPage()
                 .login(validUser1)
-                .acceptCode(VERIFICATION_CODE_TEST);
+                .acceptCode(verificationCode.getTestCode());
         dashboardPage = new DashboardPage();
 
         int difference =
-                dashboardPage.getCardBalanceOnPage(validUser1Card1) - dashboardPage.getCardBalanceOnPage(validUser1Card2);
+                dashboardPage.getCardBalanceOnPage(card1) - dashboardPage.getCardBalanceOnPage(card2);
         if (difference > 0) {
             dashboardPage
-                    .makeTransferTo(validUser1Card2)
-                    .makeTransferFromAndAmount(validUser1Card1, difference / 2);
+                    .makeTransferTo(card2)
+                    .makeTransferFromAndAmount(card1, difference / 2);
         } else if (difference < 0) {
             dashboardPage
-                    .makeTransferTo(validUser1Card1)
-                    .makeTransferFromAndAmount(validUser1Card2, difference / 2);
+                    .makeTransferTo(card1)
+                    .makeTransferFromAndAmount(card2, difference / 2);
         }
-        startBalanceOfCard1 = dashboardPage.getCardBalanceOnPage(validUser1Card1);
-        startBalanceOfCard2 = dashboardPage.getCardBalanceOnPage(validUser1Card2);
+        startBalanceOfCard1 = dashboardPage.getCardBalanceOnPage(card1);
+        startBalanceOfCard2 = dashboardPage.getCardBalanceOnPage(card2);
     }
 
     @Test
@@ -51,11 +52,11 @@ class PageObjectTask1Test {
 
         dashboardPage = new DashboardPage();
         dashboardPage
-                .makeTransferTo(validUser1Card1)
-                .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
+                .makeTransferTo(card1)
+                .makeTransferFromAndAmount(card2, transactionAmount);
 
-        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
-        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
+        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(card1));
+        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(card2));
     }
 
     @Test
@@ -64,11 +65,11 @@ class PageObjectTask1Test {
 
         dashboardPage = new DashboardPage();
         dashboardPage
-                .makeTransferTo(validUser1Card2)
-                .makeTransferFromAndAmount(validUser1Card1, transactionAmount);
+                .makeTransferTo(card2)
+                .makeTransferFromAndAmount(card1, transactionAmount);
 
-        assertEquals(startBalanceOfCard2 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
-        assertEquals(startBalanceOfCard1 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
+        assertEquals(startBalanceOfCard2 + transactionAmount, dashboardPage.getCardBalanceOnPage(card2));
+        assertEquals(startBalanceOfCard1 - transactionAmount, dashboardPage.getCardBalanceOnPage(card1));
     }
 
     @Test
@@ -77,11 +78,11 @@ class PageObjectTask1Test {
 
         dashboardPage = new DashboardPage();
         dashboardPage
-                .makeTransferTo(validUser1Card1)
-                .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
+                .makeTransferTo(card1)
+                .makeTransferFromAndAmount(card2, transactionAmount);
 
-        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card1));
-        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(validUser1Card2));
+        assertEquals(startBalanceOfCard1 + transactionAmount, dashboardPage.getCardBalanceOnPage(card1));
+        assertEquals(startBalanceOfCard2 - transactionAmount, dashboardPage.getCardBalanceOnPage(card2));
     }
 
     /**
@@ -93,13 +94,13 @@ class PageObjectTask1Test {
 
         dashboardPage = new DashboardPage();
         dashboardPage
-                .makeTransferTo(validUser1Card1)
-                .makeTransferFromAndAmount(validUser1Card2, transactionAmount);
+                .makeTransferTo(card1)
+                .makeTransferFromAndAmount(card2, transactionAmount);
 
         // не знаю как должна реагировать программа на попытку пополнить сумму большую, чем остаток
 
-        assertEquals(startBalanceOfCard1, dashboardPage.getCardBalanceOnPage(validUser1Card1));
-        assertEquals(startBalanceOfCard2, dashboardPage.getCardBalanceOnPage(validUser1Card2));
+        assertEquals(startBalanceOfCard1, dashboardPage.getCardBalanceOnPage(card1));
+        assertEquals(startBalanceOfCard2, dashboardPage.getCardBalanceOnPage(card2));
     }
 
     @Test
@@ -108,9 +109,9 @@ class PageObjectTask1Test {
 
         dashboardPage = new DashboardPage();
         dashboardPage
-                .makeTransferTo(validUser1Card1)
-                .makeTransferWithErrorCard(validUser1Card3, transactionAmount);
+                .makeTransferTo(card1)
+                .makeTransferWithErrorCard(nonExistentCard, transactionAmount);
 
-        assertEquals(startBalanceOfCard1, dashboardPage.getCardBalanceOnPage(validUser1Card1));
+        assertEquals(startBalanceOfCard1, dashboardPage.getCardBalanceOnPage(card1));
     }
 }
